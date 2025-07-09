@@ -1,14 +1,11 @@
 const message = document.getElementById('message');
-const randomNumber = getRandomNumber();
-window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const speechRecognition = new window.SpeechRecognition();
+window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 speechRecognition.start();
-function onSpeak(event){
-     const text = event.results[0][0].transcript;
-     writeMessage(text);
-     checkNumber(text);
+function getRandomNumber() {
+     return Math.floor(Math.random() * 100) + 1;
 }
-speechRecognition.addEventListener('result',onSpeak);
+const randomNumber = getRandomNumber();
 function writeMessage(text){
      message.innerHTML = `
           <div>You said: </div>
@@ -36,9 +33,12 @@ function checkNumber(text){
           message.innerHTML += '<div>GO HIGHER</div>';
      }
 }
-function getRandomNumber(){
-     return Math.floor(Math.random() * 100) + 1;
+function onSpeak(event){
+     const text = event.results[0][0].transcript;
+     writeMessage(text);
+     checkNumber(text);
 }
+speechRecognition.addEventListener('result',onSpeak);
 document.body.addEventListener('click',event => {
      if(event.target.id == 'play-again'){
           window.location.reload();
